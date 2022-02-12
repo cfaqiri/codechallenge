@@ -16,11 +16,11 @@ from payroll.services import PayrollReportService
 # What's the best way for me to add the the dollar sign in front of the amount in amount_paid?
 # How do I set up my json response so that I first have a payrollReport object 
 # What do you think of the relationships between my models? 
-## For example, when I delete a report, it deletes the timekeeping information, but not the pay periods or employees. Is that wrong?
+## For example, when I delete a report, it deletes the timekeeping information, but not the pay periods, employee reports or employees. Is that wrong?
 # How do you think I should break up the add records method under PayrollReportService so it's not super long?
 # What tests should I run?
 # Should I add authentication?
-# How do I make it so that when a timekeeping record is deleted, the employee report gets automatically updated?
+# How do I make it so that when a timekeeping record is deleted, the employee report gets automatically updated? Should I use signals?
 
 
 class UploadFile(generics.CreateAPIView):
