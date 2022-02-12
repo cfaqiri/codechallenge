@@ -44,6 +44,6 @@ class EmployeeReportList(APIView):
 
     # List all employee reports
     def get(self, request, format=None):
-        reports = EmployeeReport.objects.order_by('employee_id')
+        reports = EmployeeReport.objects.all()
         serializer = EmployeeReportSerializer(reports, many=True)
         return Response(serializer.data)

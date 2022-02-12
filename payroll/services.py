@@ -83,7 +83,8 @@ class PayrollReportService:
                 employee_report = EmployeeReport(
                     employee = employee,
                     pay_period = pay_period,
-                    amount_paid = amount_paid
+                    amount_paid = amount_paid,
+                    report = new_report
                 )
                 employee_report.save()
                 # Add the employee report to the timekeeping record

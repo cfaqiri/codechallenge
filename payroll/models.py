@@ -36,6 +36,9 @@ class EmployeeReport(models.Model):
     pay_period = models.ForeignKey(PayPeriod, on_delete=models.CASCADE)
     amount_paid = models.DecimalField(max_digits=6, decimal_places=2)
 
+    class Meta:
+        ordering = ['employee_id']
+
     def __str__(self):
         return f"{self.employee} from {self.pay_period.start_date} to {self.pay_period.end_date}: {self.amount_paid}"
 
