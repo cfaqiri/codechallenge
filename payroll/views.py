@@ -34,7 +34,7 @@ class UploadFile(generics.CreateAPIView):
         # Use service to deserialize contents of csv
         csv_data = PayrollReportService().deserialize_csv(file)
         # Use service to archive timekeeping information inside data by creating model instances
-        new_records = PayrollReportService().add_records(data=csv_data, name=file.name)
+        new_records = PayrollReportService().add_records(csv_data=csv_data, name=file.name)
         return Response({"status": "success"}, status.HTTP_201_CREATED)
 
 

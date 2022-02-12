@@ -17,13 +17,13 @@ class PayrollReportService:
         report_id = re.sub('\D', '', name)
         return report_id
 
-    def add_records(self, data=None, name=None):
+    def add_records(self, csv_data=None, name=None):
         # Create new report
         report_id = self.check_duplicate_report(name)
         new_report = Report(id=report_id)
         new_report.save()
 
-        for line in data:
+        for line in csv_data:
             # Get the job group, employee_id and hours since I'll need it later down
             job_group = JobGroup.objects.get(title=line["job group"])
             employee_id = line["employee id"]
