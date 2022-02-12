@@ -25,15 +25,16 @@ class PayrollReportService:
 
     def get_start_and_end_date(self, record=None):
         if record.date.day < 15:
-                start_date = datetime.datetime(record.date.year, record.date.month, 1)
-                end_date = datetime.datetime(record.date.year, record.date.month, 15)
+            first_day = 1
+            last_day = 15
         else:
+            first_day = 15
             last_day = calendar.monthrange(record.date.year, record.date.month)[1]
 
-            start_date = datetime.datetime(record.date.year, record.date.month, 16)
-            end_date = datetime.datetime(record.date.year, record.date.month, last_day)
-        
+        start_date = datetime.datetime(record.date.year, record.date.month, first_day)
+        end_date = datetime.datetime(record.date.year, record.date.month, last_day)
         pay_period_dates = (start_date, end_date)
+
         return pay_period_dates
 
     def add_records(self, csv_data=None, name=None):
