@@ -31,11 +31,10 @@ class UploadFile(generics.CreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         file = serializer.validated_data['file']
-        content = file.read().decode('utf-8')
-        # Manually deserializing the csv into data I can parse
-        data = csv.DictReader(content.splitlines())
-        # Using a service to archive timekeeping information inside data, and create model instances
-        new_records = PayrollReportService().add_records(data=data, name=file.name)
+        # Use service to deserialize contents of csv
+        csv_data = PayrollReportService().deserialize_csv(file)
+        # Use service to archive timekeeping information inside data by creating model instances
+        new_records = PayrollReportService().add_records(data=csv_data, name=file.name)
         return Response({"status": "success"}, status.HTTP_201_CREATED)
 
 

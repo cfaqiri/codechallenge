@@ -1,10 +1,16 @@
-import calendar, datetime, re
+import calendar, csv, datetime, re
 from decimal import Decimal
 
 from payroll.models import Employee, EmployeeReport, JobGroup, PayPeriod, Report, TimekeepingRecord
 
 
 class PayrollReportService:
+
+    def deserialize_csv(self, file):
+        content = file.read().decode('utf-8')
+        # Manually deserializing the csv into data I can parse
+        csv_data = csv.DictReader(content.splitlines())
+        return csv_data
 
     def check_duplicate_report(self, name=None):
         # Use regex to get the report's id
