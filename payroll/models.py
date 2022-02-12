@@ -31,7 +31,7 @@ class PayPeriod(models.Model):
 
 
 class EmployeeReport(models.Model):
-    report = models.ForeignKey(Report, on_delete=models.CASCADE)
+    report = models.ManyToManyField(Report)
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
     pay_period = models.ForeignKey(PayPeriod, on_delete=models.CASCADE)
     amount_paid = models.DecimalField(max_digits=6, decimal_places=2)

@@ -20,6 +20,7 @@ from payroll.services import PayrollReportService
 # How do you think I should break up the add records method under PayrollReportService so it's not super long?
 # What tests should I run?
 # Should I add authentication?
+# How do I make it so that when a timekeeping record is deleted, the employee report gets automatically updated?
 
 
 class UploadFile(generics.CreateAPIView):

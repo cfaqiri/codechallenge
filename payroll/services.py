@@ -71,7 +71,7 @@ class PayrollReportService:
             # Calculate amount paid 
             amount_paid = job_group.rate * new_record.hours
 
-            # Get or create the employee report it belongs to
+            # Get or create a list for the employee report it belongs to
             employee_report = EmployeeReport.objects.filter(
                 employee = employee,
                 pay_period = pay_period
