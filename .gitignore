@@ -10,9 +10,7 @@ env/
 
 # Database
 db.sqlite3
-**/migrations/**
-!**/migrations
-!**/migrations/__init__.py
+
 
 # Static folder at project root
 /static/
