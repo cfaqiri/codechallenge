@@ -17,11 +17,28 @@ class PayrollReportService:
         report_id = re.sub('\D', '', name)
         return report_id
 
-    def add_records(self, csv_data=None, name=None):
-        # Create new report
+    def add_report(self, name=None):
         report_id = self.check_duplicate_report(name)
         new_report = Report(id=report_id)
         new_report.save()
+        return new_report
+
+    def get_start_and_end_date(self, record=None):
+        if record.date.day < 15:
+                start_date = datetime.datetime(record.date.year, record.date.month, 1)
+                end_date = datetime.datetime(record.date.year, record.date.month, 15)
+        else:
+            last_day = calendar.monthrange(record.date.year, record.date.month)[1]
+
+            start_date = datetime.datetime(record.date.year, record.date.month, 16)
+            end_date = datetime.datetime(record.date.year, record.date.month, last_day)
+        
+        pay_period_dates = (start_date, end_date)
+        return pay_period_dates
+
+    def add_records(self, csv_data=None, name=None):
+        # Create the new report
+        new_report = self.add_report(name=name)
 
         for line in csv_data:
             # Get the job group, employee_id and hours since I'll need it later down
@@ -38,17 +55,11 @@ class PayrollReportService:
                 report = new_report
             )
             new_record.save()
-
-            # Find the start date and end date that this record would fall into to use later when assigning pay period
-            if new_record.date.day < 15:
-                start_date = datetime.datetime(new_record.date.year, new_record.date.month, 1)
-                end_date = datetime.datetime(new_record.date.year, new_record.date.month, 15)
-
-            else:
-                last_day = calendar.monthrange(new_record.date.year, new_record.date.month)[1]
-
-                start_date = datetime.datetime(new_record.date.year, new_record.date.month, 16)
-                end_date = datetime.datetime(new_record.date.year, new_record.date.month, last_day)
+            
+            # Get pay period dates as a tuple
+            pay_period_dates = self.get_start_and_end_date(new_record)
+            start_date = pay_period_dates[0]
+            end_date = pay_period_dates[1]
             
             # Get or create the employee object
             employee = Employee.objects.get_or_create(id=employee_id)[0]
@@ -67,7 +78,7 @@ class PayrollReportService:
             
             # Check if the employee report list is empty
             if len(employee_report) == 0:
-                # If empty, save new employee report
+                # If empty (meaning one doesn't exist), save new employee report
                 employee_report = EmployeeReport(
                     employee = employee,
                     pay_period = pay_period,

@@ -31,6 +31,8 @@ class UploadFile(generics.CreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         file = serializer.validated_data['file']
+        # I should probably be calling PayrollReportService().check_duplicate_report here to help me raise an error
+        
         # Use service to deserialize contents of csv
         csv_data = PayrollReportService().deserialize_csv(file)
         # Use service to archive timekeeping information inside data by creating model instances
