@@ -33,17 +33,13 @@ class UploadFile(generics.CreateAPIView):
         serializer.is_valid(raise_exception=True)
         file = serializer.validated_data['file']
         # I should probably be calling PayrollReportService().check_duplicate_report here to help me raise an error
-
-        # Use service to deserialize contents of csv
         csv_data = PayrollReportService().deserialize_csv(file)
-        # Use service to archive timekeeping information inside data by creating model instances
         new_records = PayrollReportService().add_records(csv_data=csv_data, name=file.name)
         return Response({"status": "success"}, status.HTTP_201_CREATED)
 
 
 class EmployeeReportList(APIView):
 
-    # List all employee reports
     def get(self, request, format=None):
         reports = EmployeeReport.objects.all()
         serializer = EmployeeReportSerializer(reports, many=True)

@@ -16,6 +16,7 @@ class JobGroup(models.Model):
 
 
 class Employee(models.Model):
+    # Job groups should not be deleted, unless no longer needed for any timekeeping records
     job_group = models.ForeignKey(JobGroup, on_delete=models.PROTECT)
 
     def __str__(self):
@@ -48,11 +49,8 @@ class TimekeepingRecord(models.Model):
     date = models.DateField()
     hours = models.DecimalField(max_digits=6, decimal_places=2)
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    # Null is true because the employee report may be created after the timekeeping instance is saved
     employee_report = models.ForeignKey(EmployeeReport, on_delete=models.RESTRICT, null=True)
-
-    def delete(self, *args, **kwargs):
-        print(self.employee_report)
-
 
     def __str__(self):
         date = str(self.date)
