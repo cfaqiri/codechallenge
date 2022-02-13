@@ -8,12 +8,11 @@ class PayrollReportService:
 
     def deserialize_csv(self, file):
         content = file.read().decode('utf-8')
-        # Manually deserializing the csv into data I can parse
         csv_data = csv.DictReader(content.splitlines())
         return csv_data
 
     def check_duplicate_report(self, name=None):
-        # Use regex to get the report's id
+        # I should be doing some error stuff here
         report_id = re.sub('\D', '', name)
         return report_id
 
@@ -25,14 +24,14 @@ class PayrollReportService:
 
     def get_start_and_end_date(self, record=None):
         if record.date.day < 15:
-            first_day = 1
-            last_day = 15
+            first_day_of_pay_period = 1
+            last_day_of_pay_period = 15
         else:
-            first_day = 15
-            last_day = calendar.monthrange(record.date.year, record.date.month)[1]
+            first_day_of_pay_period = 15
+            last_day_of_pay_period = calendar.monthrange(record.date.year, record.date.month)[1]
 
-        start_date = datetime.datetime(record.date.year, record.date.month, first_day)
-        end_date = datetime.datetime(record.date.year, record.date.month, last_day)
+        start_date = datetime.datetime(record.date.year, record.date.month, first_day_of_pay_period)
+        end_date = datetime.datetime(record.date.year, record.date.month, last_day_of_pay_period)
         pay_period_dates = (start_date, end_date)
 
         return pay_period_dates
@@ -62,22 +61,17 @@ class PayrollReportService:
             start_date = pay_period_dates[0]
             end_date = pay_period_dates[1]
             
-            # Get or create the employee object
             employee = Employee.objects.get_or_create(id=employee_id)[0]
-
-            # Get or create the pay period the record belongs to
             pay_period = PayPeriod.objects.get_or_create(start_date=start_date, end_date=end_date)[0]
-
-            # Calculate amount paid 
             amount_paid = job_group.rate * new_record.hours
 
-            # Get or create a list for the employee report it belongs to
+            # If a corresponding employee report exists, return a queryset
             employee_report = EmployeeReport.objects.filter(
                 employee = employee,
                 pay_period = pay_period
             )
             
-            # Check if the employee report list is empty
+            # Check if the employee report queryset is empty
             if len(employee_report) == 0:
                 # If empty (meaning one doesn't exist), save new employee report
                 employee_report = EmployeeReport(

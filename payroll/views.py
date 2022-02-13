@@ -21,7 +21,7 @@ from payroll.services import PayrollReportService
 # What tests should I run?
 # Should I add authentication?
 # How do I make it so that when a timekeeping record is deleted, the employee report gets automatically updated? Should I use signals?
-
+# Dynamically delete pay periods if there are no corresponding timekeeping records/employee reports
 
 class UploadFile(generics.CreateAPIView):
 
