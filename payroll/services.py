@@ -15,8 +15,7 @@ class PayrollReportService:
         print(existing_id)
         if len(existing_id) == 0:
             return False
-        else:
-            return True
+        return True
 
     def deserialize_csv(self, file):
         content = file.read().decode('utf-8')
