@@ -6,19 +6,27 @@ from payroll.models import Employee, EmployeeReport, JobGroup, PayPeriod, Report
 
 class PayrollReportService:
 
+    def get_report_id(self, name=None):
+        report_id = int(re.sub('\D', '', name))
+        return report_id
+
+    def check_duplicate_report(self, name=None):
+        report_id = self.get_report_id(name=name)
+        existing_id = Report.objects.filter(report_id=report_id)
+        print(existing_id)
+        if len(existing_id) == 0:
+            return False
+        else:
+            return True
+
     def deserialize_csv(self, file):
         content = file.read().decode('utf-8')
         csv_data = csv.DictReader(content.splitlines())
         return csv_data
 
-    def check_duplicate_report(self, name=None):
-        # I should be doing some error stuff here
-        report_id = re.sub('\D', '', name)
-        return report_id
-
     def add_report(self, name=None):
-        report_id = self.check_duplicate_report(name)
-        new_report = Report(id=report_id)
+        report_id = self.get_report_id(name=name)
+        new_report = Report(report_id=report_id)
         new_report.save()
         return new_report
 
@@ -51,7 +59,7 @@ class PayrollReportService:
                 date = datetime.datetime.strptime(line["date"], "%d/%m/%Y"),
                 hours = hours,
                 # Remember that get or create gives you a tuple, so the [0] is selecting the object
-                employee = Employee.objects.get_or_create(id=employee_id, job_group=job_group)[0],
+                employee = Employee.objects.get_or_create(employee_id=employee_id, job_group=job_group)[0],
                 report = new_report
             )
             new_record.save()
@@ -61,7 +69,7 @@ class PayrollReportService:
             start_date = pay_period_dates[0]
             end_date = pay_period_dates[1]
             
-            employee = Employee.objects.get_or_create(id=employee_id)[0]
+            employee = Employee.objects.get_or_create(employee_id=employee_id)[0]
             pay_period = PayPeriod.objects.get_or_create(start_date=start_date, end_date=end_date)[0]
             amount_paid = job_group.rate * new_record.hours
 
@@ -77,10 +85,10 @@ class PayrollReportService:
                 employee_report = EmployeeReport(
                     employee = employee,
                     pay_period = pay_period,
-                    amount_paid = amount_paid,
-                    report = new_report
+                    amount_paid = amount_paid
                 )
                 employee_report.save()
+                employee_report.report.add(new_report)
                 # Add the employee report to the timekeeping record
                 new_record.employee_report = employee_report
                 new_record.save()

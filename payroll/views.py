@@ -1,4 +1,5 @@
 import csv
+
 from rest_framework import generics, status
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.response import Response
@@ -9,32 +10,19 @@ from payroll.serializers import EmployeeReportSerializer, FileUploadSerializer
 from payroll.services import PayrollReportService
 
 
-# How do I properly raise an error in DRF when the report uploaded is a duplicate?
-# You said that CreateAPIView here may not necessary but I can't do just APIView or I get an error when I post a file
-# The json I return isn't camelcased - should I be renaming my models?
-# How come employee ID doesnt come up in quotes in the json response?
-# What's the best way for me to add the the dollar sign in front of the amount in amount_paid?
-# How do I set up my json response so that I first have a payrollReport object 
-# What do you think of the relationships between my models? 
-## For example, when I delete a report, it deletes the timekeeping information, but not the pay periods, employee reports or employees. Is that wrong?
-# How do you think I should break up the add records method under PayrollReportService so it's not super long?
-# What tests should I run?
-# Should I add authentication?
-# How do I make it so that when a timekeeping record is deleted, the employee report gets automatically updated? Should I use signals?
-# Dynamically delete pay periods if there are no corresponding timekeeping records/employee reports
-
-class UploadFile(generics.CreateAPIView):
-
+class UploadFile(APIView):
     parser_classes = (MultiPartParser, FormParser,)
     serializer_class = FileUploadSerializer
 
-    def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
+    def post(self, request, format=None):
+        serializer = FileUploadSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         file = serializer.validated_data['file']
-        # I should probably be calling PayrollReportService().check_duplicate_report here to help me raise an error
+        check_duplicate_report = PayrollReportService().check_duplicate_report(file.name)
+        if check_duplicate_report == True:
+            return Response({"status": "upload failed due to duplicate report"}, status=status.HTTP_400_BAD_REQUEST)
         csv_data = PayrollReportService().deserialize_csv(file)
-        new_records = PayrollReportService().add_records(csv_data=csv_data, name=file.name)
+        PayrollReportService().add_records(csv_data=csv_data, name=file.name)
         return Response({"status": "success"}, status.HTTP_201_CREATED)
 
 
@@ -43,4 +31,6 @@ class EmployeeReportList(APIView):
     def get(self, request, format=None):
         reports = EmployeeReport.objects.all()
         serializer = EmployeeReportSerializer(reports, many=True)
-        return Response(serializer.data)
+        employeeReports = {'employeeReports': serializer.data}
+        payrollReport = {'payrollReport': employeeReports}
+        return Response(payrollReport)

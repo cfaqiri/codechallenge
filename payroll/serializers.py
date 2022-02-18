@@ -6,10 +6,10 @@ class FileUploadSerializer(serializers.Serializer):
     file = serializers.FileField()
     
 
-class Employee(serializers.ModelSerializer):
+class EmployeeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Employee
-        fields = ['job_group']
+        fields = ['id']
 
 
 class JobGroupSerializer(serializers.ModelSerializer):
@@ -19,20 +19,30 @@ class JobGroupSerializer(serializers.ModelSerializer):
 
 
 class TimekeepingRecordSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = TimekeepingRecord
         fields = ['date', 'hours', 'employee']
 
 
 class PayPeriodSerializer(serializers.ModelSerializer):
+    startDate = serializers.CharField(source='start_date')
+    endDate = serializers.CharField(source='end_date')
+    
     class Meta:
         model = PayPeriod
-        fields = ['start_date', 'end_date']
+        fields = ['startDate', 'endDate']
 
 
 class EmployeeReportSerializer(serializers.ModelSerializer):
-    pay_period = PayPeriodSerializer(read_only=True)
+    employeeId = serializers.CharField(source='employee_id')
+    payPeriod = PayPeriodSerializer(source='pay_period')
+    amountPaid = serializers.SerializerMethodField()
 
     class Meta:
         model = EmployeeReport
-        fields = ['employee', 'pay_period', 'amount_paid']
+        fields = ['employeeId', 'payPeriod', 'amountPaid']
+
+    def get_amountPaid(self, obj):
+        obj.amount_paid = f'${obj.amount_paid}'
+        return obj.amount_paid

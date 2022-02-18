@@ -1,10 +1,13 @@
 from django.db import models
+from django.db.models.signals import pre_delete
+from django.dispatch import receiver
 
 
 class Report(models.Model):
+    report_id = models.IntegerField(primary_key=True)
 
     def __str__(self):
-        return str(self.id)
+        return str(self.report_id)
 
 
 class JobGroup(models.Model):
@@ -16,11 +19,12 @@ class JobGroup(models.Model):
 
 
 class Employee(models.Model):
-    # Job groups should not be deleted, unless no longer needed for any timekeeping records
+    # Job groups should not be deleted, unless no longer needed for any employees
+    employee_id = models.IntegerField(primary_key=True)
     job_group = models.ForeignKey(JobGroup, on_delete=models.PROTECT)
 
     def __str__(self):
-        return str(self.id)
+        return str(self.employee_id)
 
 
 class PayPeriod(models.Model):
@@ -32,7 +36,7 @@ class PayPeriod(models.Model):
 
 
 class EmployeeReport(models.Model):
-    report = models.ForeignKey(Report, on_delete=models.CASCADE)
+    report = models.ManyToManyField(Report)
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
     pay_period = models.ForeignKey(PayPeriod, on_delete=models.CASCADE)
     amount_paid = models.DecimalField(max_digits=6, decimal_places=2)
@@ -50,6 +54,7 @@ class TimekeepingRecord(models.Model):
     hours = models.DecimalField(max_digits=6, decimal_places=2)
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
     # Null is true because the employee report may be created after the timekeeping instance is saved
+    # Restrict because an employee report shouldn't get deleted unless all of its timekeeping records are first deleted
     employee_report = models.ForeignKey(EmployeeReport, on_delete=models.RESTRICT, null=True)
 
     def __str__(self):
