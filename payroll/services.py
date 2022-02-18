@@ -12,7 +12,6 @@ class PayrollReportService:
     def check_duplicate_report(self, name=None):
         report_id = self.get_report_id(name=name)
         existing_id = Report.objects.filter(report_id=report_id)
-        print(existing_id)
         if len(existing_id) == 0:
             return False
         return True
