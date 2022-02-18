@@ -1,6 +1,5 @@
 import calendar, csv, datetime, re
 from decimal import Decimal
-
 from payroll.models import Employee, EmployeeReport, JobGroup, PayPeriod, Report, TimekeepingRecord
 
 
