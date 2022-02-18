@@ -1,7 +1,7 @@
 import argparse
 from django.core.management.base import BaseCommand, CommandError
 
-
+# This is a work in progress
 class Command(BaseCommand):
     help = 'Import file at command line'
 
