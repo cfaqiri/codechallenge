@@ -17,10 +17,26 @@ Beyond the assumptions already outlined in requirements in the link above, the A
 ```
 git clone https://github.com/cfaqiri/codechallenge.git
 ```
-3. Install the requirements: `pip install -r requirements.txt`
-4. Configure a PostgreSQL server in settings.py
-5. Make the migrations
-6. Create a superuser
-7. Add job groups in the admin
+2. Install the requirements (virtual environment recommended)
+```
+pip install -r requirements.txt
+```
+3. Configure a PostgreSQL server in settings.py
+4. Make all migrations
+```
+python manage.py migrate
+```
+5. Create a superuser
+```
+python manage.py createsuperuser
+```
+6. Log into /admin and add job groups
+
+# Routes
+## Upload 
+The endpoint to upload a file can be accessed via a POST request to the '/upload' url.
+## Retrieve
+The endpoint to retrieve payroll information can be accessed via a GET request to the '/retrieve' url.
+
 
 
