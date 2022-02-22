@@ -14,8 +14,10 @@ Beyond the assumptions already outlined in requirements in the link above, the A
 
 # Installation
 1. Clone the repository
-   ```git clone https://github.com/cfaqiri/codechallenge.git```
-3. Install the requirements
+```
+git clone https://github.com/cfaqiri/codechallenge.git
+```
+3. Install the requirements: `pip install -r requirements.txt`
 4. Configure a PostgreSQL server in settings.py
 5. Make the migrations
 6. Create a superuser
