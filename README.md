@@ -1,5 +1,5 @@
 # Introduction
-This project is an API inspired by the requirements of the Paryoll code challenge written Wave Financial for their Full-Stack Engineer applicants. See [Wave Software Development Challenge](https://github.com/wvchallenges/se-challenge-payroll) for more details. 
+This project is an API inspired by the requirements of the Payroll code challenge written by Wave Financial for their Full-Stack Engineer applicants. See [Wave Software Development Challenge](https://github.com/wvchallenges/se-challenge-payroll) for more details. 
 
 # Features
 This API has two endpoints:
@@ -14,7 +14,7 @@ Beyond the assumptions already outlined in requirements in the link above, the A
 
 # Installation
 1. Clone the repository
-   `git clone https://github.com/cfaqiri/codechallenge.git`
+   ```git clone https://github.com/cfaqiri/codechallenge.git```
 3. Install the requirements
 4. Configure a PostgreSQL server in settings.py
 5. Make the migrations
