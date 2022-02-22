@@ -13,6 +13,12 @@ PostgreSQL is required to accommodate the DecimalFields used in this project.
 Beyond the assumptions already outlined in requirements in the link above, the API assumes that job groups have been created in advance of uploading a csv file that contains timekeeping information. 
 
 # Installation
-
+1. Clone the repository
+   `git clone https://github.com/cfaqiri/codechallenge.git`
+3. Install the requirements
+4. Configure a PostgreSQL server in settings.py
+5. Make the migrations
+6. Create a superuser
+7. Add job groups in the admin
 
 
