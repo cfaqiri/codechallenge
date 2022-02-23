@@ -10,7 +10,7 @@ This API has two endpoints:
 PostgreSQL is required to accommodate the DecimalFields used in this project. 
 
 # Assumptions
-Beyond the assumptions already outlined in requirements in the link above, the API assumes that job groups have been created in advance of uploading a csv file that contains timekeeping information. 
+Beyond the assumptions already outlined in requirements in the link above, the API assumes that job groups have been created in the database in advance of uploading a csv file. 
 
 # Installation
 1. Clone the repository
