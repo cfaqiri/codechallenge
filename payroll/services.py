@@ -67,7 +67,7 @@ class PayrollReportService:
             start_date = pay_period_dates[0]
             end_date = pay_period_dates[1]
             
-            employee = Employee.objects.get_or_create(employee_id=employee_id)[0]
+            employee = Employee.objects.get_or_create(employee_id=employee_id, employer=user)[0]
             pay_period = PayPeriod.objects.get_or_create(start_date=start_date, end_date=end_date, employer=user)[0]
             amount_paid = job_group.rate * new_record.hours
 
