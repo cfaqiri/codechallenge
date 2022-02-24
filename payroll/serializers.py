@@ -1,5 +1,6 @@
+from django.contrib.auth.models import User
 from rest_framework import serializers
-from payroll.models import Employee, EmployeeReport, JobGroup, PayPeriod, TimekeepingRecord
+from payroll.models import Employee, EmployeeReport, JobGroup, PayPeriod, Report, TimekeepingRecord
 
 
 class FileUploadSerializer(serializers.Serializer):

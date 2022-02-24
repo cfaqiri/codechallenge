@@ -2,6 +2,7 @@ from django.db import models
 
 
 class Report(models.Model):
+    employer = models.ForeignKey('auth.User', related_name='reports', on_delete=models.CASCADE)
     report_id = models.IntegerField(primary_key=True)
 
     def __str__(self):
@@ -9,6 +10,7 @@ class Report(models.Model):
 
 
 class JobGroup(models.Model):
+    employer = models.ForeignKey('auth.User', related_name='job_groups', on_delete=models.CASCADE)
     title = models.CharField(max_length=1)
     rate = models.DecimalField(max_digits=6, decimal_places=2)
 
@@ -17,6 +19,7 @@ class JobGroup(models.Model):
 
 
 class Employee(models.Model):
+    employer = models.ForeignKey('auth.User', related_name='employees', on_delete=models.CASCADE)
     # Job groups should not be deleted, unless no longer needed for any employees
     employee_id = models.IntegerField(primary_key=True)
     job_group = models.ForeignKey(JobGroup, on_delete=models.PROTECT)
@@ -26,6 +29,7 @@ class Employee(models.Model):
 
 
 class PayPeriod(models.Model):
+    employer = models.ForeignKey('auth.User', related_name='pay_periods', on_delete=models.CASCADE)
     start_date = models.DateField()
     end_date = models.DateField()
 
@@ -34,6 +38,7 @@ class PayPeriod(models.Model):
 
 
 class EmployeeReport(models.Model):
+    employer = models.ForeignKey('auth.User', related_name='employee_reports', on_delete=models.CASCADE)
     report = models.ManyToManyField(Report)
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
     pay_period = models.ForeignKey(PayPeriod, on_delete=models.CASCADE)
@@ -47,6 +52,7 @@ class EmployeeReport(models.Model):
 
 
 class TimekeepingRecord(models.Model):
+    employer = models.ForeignKey('auth.User', related_name='timekeeping_records', on_delete=models.CASCADE)
     report = models.ForeignKey(Report, on_delete=models.CASCADE)
     date = models.DateField()
     hours = models.DecimalField(max_digits=6, decimal_places=2)

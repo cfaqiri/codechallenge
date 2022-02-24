@@ -1,5 +1,6 @@
 from rest_framework import generics, status
 from rest_framework.parsers import FormParser, MultiPartParser
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -9,6 +10,8 @@ from payroll.services import PayrollReportService
 
 
 class UploadFile(APIView):
+    permission_classes = [IsAuthenticated]
+
     parser_classes = (MultiPartParser, FormParser,)
     serializer_class = FileUploadSerializer
 
@@ -25,9 +28,10 @@ class UploadFile(APIView):
 
 
 class EmployeeReportList(APIView):
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, format=None):
-        reports = EmployeeReport.objects.all()
+        reports = EmployeeReport.objects.filter(employer=request.user)
         serializer = EmployeeReportSerializer(reports, many=True)
         employeeReports = {'employeeReports': serializer.data}
         payrollReport = {'payrollReport': employeeReports}
