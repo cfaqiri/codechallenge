@@ -21,9 +21,9 @@ class PayrollReportService:
         csv_data = csv.DictReader(content.splitlines())
         return csv_data
 
-    def add_report(self, name=None):
+    def add_report(self, name=None, user=None):
         report_id = self.get_report_id(name=name)
-        new_report = Report(report_id=report_id)
+        new_report = Report(report_id=report_id, employer=user)
         new_report.save()
         return new_report
 
@@ -41,9 +41,9 @@ class PayrollReportService:
 
         return pay_period_dates
 
-    def add_records(self, csv_data=None, name=None):
+    def add_records(self, csv_data=None, name=None, user=None):
         # Create the new report
-        new_report = self.add_report(name=name)
+        new_report = self.add_report(name=name, user=user)
 
         for line in csv_data:
             # Get the job group, employee_id and hours since I'll need it later down

@@ -3,7 +3,7 @@ from django.db import models
 
 class Report(models.Model):
     employer = models.ForeignKey('auth.User', related_name='reports', on_delete=models.CASCADE)
-    report_id = models.IntegerField(primary_key=True)
+    report_id = models.IntegerField()
 
     def __str__(self):
         return str(self.report_id)
