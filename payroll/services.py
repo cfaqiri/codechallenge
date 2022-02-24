@@ -5,14 +5,14 @@ from payroll.models import Employee, EmployeeReport, JobGroup, PayPeriod, Report
 
 class PayrollReportService:
 
-    def get_report_id(self, name=None):
-        report_id = int(re.sub('\D', '', name))
-        return report_id
+    def get_report_number(self, name=None):
+        report_number = int(re.sub('\D', '', name))
+        return report_number
 
     def check_duplicate_report(self, name=None, user=None):
-        report_id = self.get_report_id(name=name)
-        existing_id = Report.objects.filter(report_id=report_id, employer=user)
-        if len(existing_id) == 0:
+        report_number = self.get_report_number(name=name)
+        existing_report = Report.objects.filter(number=report_number, employer=user)
+        if len(existing_report) == 0:
             return False
         return True
 
@@ -22,8 +22,8 @@ class PayrollReportService:
         return csv_data
 
     def add_report(self, name=None, user=None):
-        report_id = self.get_report_id(name=name)
-        new_report = Report(report_id=report_id, employer=user)
+        report_number = self.get_report_number(name=name)
+        new_report = Report(number=report_number, employer=user)
         new_report.save()
         return new_report
 
