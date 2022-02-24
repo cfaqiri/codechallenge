@@ -10,7 +10,7 @@ class FileUploadSerializer(serializers.Serializer):
 class EmployeeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Employee
-        fields = ['id']
+        fields = ['number']
 
 
 class JobGroupSerializer(serializers.ModelSerializer):

@@ -47,8 +47,8 @@ class PayrollReportService:
 
         for line in csv_data:
             # Get the job group, employee_id and hours since I'll need it later down
-            job_group = JobGroup.objects.get(title=line["job group"])
-            employee_id = line["employee id"]
+            job_group = JobGroup.objects.get(title=line["job group"], employer=user)
+            employee_number = line["employee id"]
             hours = Decimal(line["hours worked"])
 
             # Save the timekeeping record
@@ -56,7 +56,7 @@ class PayrollReportService:
                 date = datetime.datetime.strptime(line["date"], "%d/%m/%Y"),
                 hours = hours,
                 # Remember that get or create gives you a tuple, so the [0] is selecting the object
-                employee = Employee.objects.get_or_create(employee_id=employee_id, job_group=job_group, employer=user)[0],
+                employee = Employee.objects.get_or_create(number=employee_number, job_group=job_group, employer=user)[0],
                 report = new_report,
                 employer = user
             )
@@ -67,7 +67,7 @@ class PayrollReportService:
             start_date = pay_period_dates[0]
             end_date = pay_period_dates[1]
             
-            employee = Employee.objects.get_or_create(employee_id=employee_id, employer=user)[0]
+            employee = Employee.objects.get_or_create(number=employee_number, employer=user)[0]
             pay_period = PayPeriod.objects.get_or_create(start_date=start_date, end_date=end_date, employer=user)[0]
             amount_paid = job_group.rate * new_record.hours
 

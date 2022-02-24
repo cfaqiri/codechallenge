@@ -21,11 +21,11 @@ class JobGroup(models.Model):
 class Employee(models.Model):
     employer = models.ForeignKey('auth.User', related_name='employees', on_delete=models.CASCADE)
     # Job groups should not be deleted, unless no longer needed for any employees
-    employee_id = models.IntegerField(primary_key=True)
+    number = models.IntegerField()
     job_group = models.ForeignKey(JobGroup, on_delete=models.PROTECT)
 
     def __str__(self):
-        return str(self.employee_id)
+        return str(self.number)
 
 
 class PayPeriod(models.Model):
