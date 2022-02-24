@@ -10,7 +10,9 @@ This API has two endpoints:
 PostgreSQL is required to accommodate the DecimalFields used in this project. SQLite3 does not support this model field. 
 
 # Assumptions
-Beyond the assumptions already outlined in requirements in the link above, the API assumes that job groups have been created in the database in advance of uploading a csv file. 
+Beyond the assumptions already outlined in requirements in the link above, the API assumes that:
+- Users have been created (for authentication and permissions purposes)
+- Job groups have been created in the database in advance of uploading a csv file. 
 
 # Installation
 1. Clone the repository
