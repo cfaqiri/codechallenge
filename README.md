@@ -6,6 +6,8 @@ This API has two endpoints:
 - One endpoint to **upload** a csv file containing timekeeping data for employees
 - Another endpoint to **retrieve** a report containing payroll information based on a bi-monthly pay cycle
 
+The API also features user authentication for both endpoints. 
+
 # Prerequisites
 PostgreSQL is required to accommodate the DecimalFields used in this project. SQLite3 does not support this model field. 
 
