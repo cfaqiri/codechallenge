@@ -6,7 +6,7 @@ class Report(models.Model):
     number = models.IntegerField()
 
     def __str__(self):
-        return str(self.report_number)
+        return str(self.number)
 
 
 class JobGroup(models.Model):

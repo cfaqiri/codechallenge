@@ -56,8 +56,9 @@ class PayrollReportService:
                 date = datetime.datetime.strptime(line["date"], "%d/%m/%Y"),
                 hours = hours,
                 # Remember that get or create gives you a tuple, so the [0] is selecting the object
-                employee = Employee.objects.get_or_create(employee_id=employee_id, job_group=job_group)[0],
-                report = new_report
+                employee = Employee.objects.get_or_create(employee_id=employee_id, job_group=job_group, employer=user)[0],
+                report = new_report,
+                employer = user
             )
             new_record.save()
             
@@ -67,7 +68,7 @@ class PayrollReportService:
             end_date = pay_period_dates[1]
             
             employee = Employee.objects.get_or_create(employee_id=employee_id)[0]
-            pay_period = PayPeriod.objects.get_or_create(start_date=start_date, end_date=end_date)[0]
+            pay_period = PayPeriod.objects.get_or_create(start_date=start_date, end_date=end_date, employer=user)[0]
             amount_paid = job_group.rate * new_record.hours
 
             # If a corresponding employee report exists, return a queryset
@@ -82,7 +83,8 @@ class PayrollReportService:
                 employee_report = EmployeeReport(
                     employee = employee,
                     pay_period = pay_period,
-                    amount_paid = amount_paid
+                    amount_paid = amount_paid,
+                    employer = user
                 )
                 employee_report.save()
                 employee_report.report.add(new_report)
