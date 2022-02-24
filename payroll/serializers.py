@@ -36,7 +36,7 @@ class PayPeriodSerializer(serializers.ModelSerializer):
 
 
 class EmployeeReportSerializer(serializers.ModelSerializer):
-    employeeId = serializers.CharField(source='employee_id')
+    employeeId = serializers.CharField(source='employee')
     payPeriod = PayPeriodSerializer(source='pay_period')
     amountPaid = serializers.SerializerMethodField()
 
