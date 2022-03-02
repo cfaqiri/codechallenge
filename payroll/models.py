@@ -1,3 +1,5 @@
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.db import models
 
 
@@ -58,9 +60,15 @@ class TimekeepingRecord(models.Model):
     hours = models.DecimalField(max_digits=6, decimal_places=2)
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
     # Null is true because the employee report may be created after the timekeeping instance is saved
-    # Restrict because an employee report shouldn't get deleted unless all of its timekeeping records are first deleted
-    employee_report = models.ForeignKey(EmployeeReport, on_delete=models.RESTRICT, null=True)
+    employee_report = models.ForeignKey(EmployeeReport, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         date = str(self.date)
         return f"{self.employee} on {date}"
+
+
+
+# @receiver(post_save, sender=TimekeepingRecord)
+# def create_profile(sender, instance, created, **kwargs):
+#     if created:
+#         print("This is working")

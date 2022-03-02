@@ -1,3 +1,5 @@
+from django.db import transaction
+
 from rest_framework import status
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated
@@ -8,13 +10,15 @@ from payroll.models import EmployeeReport
 from payroll.serializers import EmployeeReportSerializer, FileUploadSerializer
 from payroll.services import PayrollReportService
 
-
+# Use transaction for rollback, do it when you're done the management command task 
+# Transaction rollback won't show me all the errors 
 class UploadFile(APIView):
     permission_classes = [IsAuthenticated]
 
     parser_classes = (MultiPartParser, FormParser,)
     serializer_class = FileUploadSerializer
 
+    @transaction.atomic
     def post(self, request, format=None):
         serializer = FileUploadSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)

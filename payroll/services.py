@@ -17,6 +17,7 @@ class PayrollReportService:
         return True
 
     def deserialize_csv(self, file):
+        # Use if else statement to differentiate between when file comes from view vs command
         content = file.read().decode('utf-8')
         csv_data = csv.DictReader(content.splitlines())
         return csv_data
@@ -27,7 +28,8 @@ class PayrollReportService:
         new_report.save()
         return new_report
 
-    def get_start_and_end_date(self, record=None):
+    @staticmethod
+    def get_start_and_end_date(record=None):
         if record.date.day < 15:
             first_day_of_pay_period = 1
             last_day_of_pay_period = 15
@@ -61,40 +63,3 @@ class PayrollReportService:
                 employer = user
             )
             new_record.save()
-            
-            # Get pay period dates as a tuple
-            pay_period_dates = self.get_start_and_end_date(new_record)
-            start_date = pay_period_dates[0]
-            end_date = pay_period_dates[1]
-            
-            employee = Employee.objects.get_or_create(number=employee_number, employer=user)[0]
-            pay_period = PayPeriod.objects.get_or_create(start_date=start_date, end_date=end_date, employer=user)[0]
-            amount_paid = job_group.rate * new_record.hours
-
-            # If a corresponding employee report exists, return a queryset
-            employee_report = EmployeeReport.objects.filter(
-                employee = employee,
-                pay_period = pay_period
-            )
-            
-            # Check if the employee report queryset is empty
-            if len(employee_report) == 0:
-                # If empty (meaning one doesn't exist), save new employee report
-                employee_report = EmployeeReport(
-                    employee = employee,
-                    pay_period = pay_period,
-                    amount_paid = amount_paid,
-                    employer = user
-                )
-                employee_report.save()
-                employee_report.report.add(new_report)
-                # Add the employee report to the timekeeping record
-                new_record.employee_report = employee_report
-                new_record.save()
-            else:
-                # If not empty, adjust amount paid in existing report
-                employee_report[0].amount_paid += amount_paid
-                employee_report[0].save()
-                # Add the employee report to the timekeeping record
-                new_record.employee_report = employee_report[0]
-                new_record.save()
