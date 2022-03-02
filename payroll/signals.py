@@ -5,7 +5,7 @@ from payroll.models import Employee, EmployeeReport, JobGroup, PayPeriod, Timeke
 from payroll.services import PayrollReportService
 
 @receiver(post_save, sender=TimekeepingRecord)
-def create_pay_period(sender, instance, created, **kwargs):
+def create_pay_period_and_employee_report(sender, instance, created, **kwargs):
     if created:
         pay_period_dates = PayrollReportService.get_start_and_end_date(instance)
         start_date = pay_period_dates[0]
