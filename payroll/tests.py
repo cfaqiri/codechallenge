@@ -1,18 +1,23 @@
+import json
+
+from django.contrib.auth.models import User
+from django.test import TestCase
 from rest_framework.test import APIClient
 from rest_framework import status
-from django.test import TestCase
 
-from django.contrib.auth.models import User 
 
-client = APIClient()
+class UserTests(TestCase):
+    def test_register_user(self):
+        '''Check if we can register a new account'''
 
-class UserTestCase(TestCase):
-    def setUp(self):
-        user = User(
-            email='testing_login@cosasdedevs.com',
-            username='Testing',
+        client = APIClient()
+        response = client.post(
+                '/register/', {
+                'email': 'test123@gmail.com',
+                'username': 'test_user',
+                'password': 'test_password123'
+            },
         )
-        user.set_password('admin123')
-        user.save()
-    
+        
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)    
     
