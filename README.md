@@ -2,9 +2,10 @@
 This project is an API inspired by the requirements of the Payroll code challenge written by Wave Financial for their Full-Stack Engineer applicants. See [Wave Software Development Challenge](https://github.com/wvchallenges/se-challenge-payroll) for more details. 
 
 # Features
-This API has two endpoints:
-- One endpoint to **upload** a csv file containing timekeeping data for employees
-- Another endpoint to **retrieve** a report containing payroll information based on a bi-monthly pay cycle
+This API has three endpoints:
+- One endpoint to **register** an account
+- Another endpoint to **upload** a csv file containing timekeeping data for employees
+- A final endpoint to **retrieve** a report containing payroll information based on a bi-monthly pay cycle
 
 The API also features user authentication and permissions for both endpoints. 
 
@@ -13,7 +14,7 @@ PostgreSQL is required to accommodate the DecimalFields used in this project. SQ
 
 # Assumptions
 Beyond the assumptions already outlined in requirements in the link above, the API assumes that:
-- Users have been created (for authentication and permissions purposes)
+- Only a staff account is capable of creating job groups (for now - changes coming soon!)
 - Job groups have been created in the database in advance of uploading a csv file. 
 
 # Installation
@@ -37,6 +38,8 @@ python manage.py createsuperuser
 6. Log into /admin and add job groups
 
 # Routes
+## Register
+The endpoing to register an account can be accessed via a POST request to the './register' url.
 ## Upload 
 The endpoint to upload a file can be accessed via a POST request to the '/upload' url.
 ## Retrieve
