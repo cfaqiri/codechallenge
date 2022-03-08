@@ -14,7 +14,7 @@ PostgreSQL is required to accommodate the DecimalFields used in this project. SQ
 
 # Assumptions
 Beyond the assumptions already outlined in requirements in the link above, the API assumes that:
-- Users have been created (for authentication and permissions purposes)
+- Only a staff account is capable of creating job groups (for now - changes coming soon!)
 - Job groups have been created in the database in advance of uploading a csv file. 
 
 # Installation
