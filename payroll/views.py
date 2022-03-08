@@ -1,14 +1,20 @@
 from django.db import transaction
 
 from rest_framework import status
+from rest_framework.generics import CreateAPIView
 from rest_framework.parsers import FormParser, MultiPartParser
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from payroll.models import EmployeeReport
-from payroll.serializers import EmployeeReportSerializer, FileUploadSerializer
+from payroll.serializers import EmployeeReportSerializer, FileUploadSerializer, UserSerializer
 from payroll.services import PayrollReportService
+
+
+class RegisterUser(CreateAPIView):
+    permission_classes = (AllowAny,)
+    serializer_class = UserSerializer
 
 
 class UploadFile(APIView):

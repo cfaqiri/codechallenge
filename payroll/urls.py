@@ -4,7 +4,8 @@ from payroll import views
 
 urlpatterns = [
     path('upload/', views.UploadFile.as_view()),
-    path('retrieve/', views.EmployeeReportList.as_view())
+    path('retrieve/', views.EmployeeReportList.as_view()),
+    path('register/', views.RegisterUser.as_view())
 ]
 
 urlpatterns += [

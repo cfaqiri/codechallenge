@@ -3,6 +3,18 @@ from rest_framework import serializers
 from payroll.models import Employee, EmployeeReport, JobGroup, PayPeriod, Report, TimekeepingRecord
 
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['email', 'username', 'password']
+
+    def create(self, validated_data):
+        user = super(UserSerializer, self).create(validated_data)
+        user.set_password(validated_data['password'])
+        user.save()
+        return user
+
+
 class FileUploadSerializer(serializers.Serializer):
     file = serializers.FileField()
     
