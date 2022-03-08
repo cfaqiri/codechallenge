@@ -65,10 +65,3 @@ class TimekeepingRecord(models.Model):
     def __str__(self):
         date = str(self.date)
         return f"{self.employee} on {date}"
-
-
-
-# @receiver(post_save, sender=TimekeepingRecord)
-# def create_profile(sender, instance, created, **kwargs):
-#     if created:
-#         print("This is working")

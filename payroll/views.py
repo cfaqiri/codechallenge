@@ -10,8 +10,7 @@ from payroll.models import EmployeeReport
 from payroll.serializers import EmployeeReportSerializer, FileUploadSerializer
 from payroll.services import PayrollReportService
 
-# Use transaction for rollback, do it when you're done the management command task 
-# Transaction rollback won't show me all the errors 
+
 class UploadFile(APIView):
     permission_classes = [IsAuthenticated]
 
