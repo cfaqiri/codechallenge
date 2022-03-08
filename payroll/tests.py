@@ -7,7 +7,7 @@ from rest_framework import status
 
 
 class UserTests(TestCase):
-    def test_register_user(self):
+    def test_user_registration(self):
         '''Check if we can register a new account'''
 
         client = APIClient()
