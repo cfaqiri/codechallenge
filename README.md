@@ -39,7 +39,7 @@ python manage.py createsuperuser
 
 # Routes
 ## Register
-The endpoing to register an account can be accessed via a POST request to the './register' url.
+The endpoing to register an account can be accessed via a POST request to the '/register' url.
 ## Upload 
 The endpoint to upload a file can be accessed via a POST request to the '/upload' url.
 ## Retrieve
