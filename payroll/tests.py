@@ -25,19 +25,19 @@ class UserTests(TestCase):
 
         client = APIClient()
         response = client.post(
-                '/register/', {
+            '/register/', {
                 'email': 'test123@gmail.com',
                 'username': 'test_user2',
                 'password': 'test_password123'
             },
         )
 
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)  
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_user_login(self):
         client = APIClient()
         response = client.post(
-                reverse('payroll:login'), {
+            reverse('payroll:login'), {
                 'username': 'test_user',
                 'password': 'admin123',
             },
@@ -85,7 +85,8 @@ class FileUploadTests(TestCase):
             response = client.post('/upload/', {'file': file})
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(json.loads(response.content), {"status": "upload failed due to duplicate report"})
+        self.assertEqual(json.loads(response.content), {
+                         "status": "upload failed due to duplicate report"})
 
 
 class EmployeeReportTests(TestCase):
@@ -114,7 +115,8 @@ class EmployeeReportTests(TestCase):
         client.login(username='testing_file_upload', password='admin123')
         response = client.get(reverse('payroll:retrieve'))
 
-        content = {"payrollReport":{"employeeReports":[{"employeeId":"1","payPeriod":{"startDate":"2023-01-01","endDate":"2023-01-15"},"amountPaid":"$300.00"},{"employeeId":"1","payPeriod":{"startDate":"2023-01-15","endDate":"2023-01-31"},"amountPaid":"$80.00"},{"employeeId":"2","payPeriod":{"startDate":"2023-01-15","endDate":"2023-01-31"},"amountPaid":"$90.00"}]}}
+        content = {"payrollReport": {"employeeReports": [{"employeeId": "1", "payPeriod": {"startDate": "2023-01-01", "endDate": "2023-01-15"}, "amountPaid": "$300.00"}, {"employeeId": "1", "payPeriod": {
+            "startDate": "2023-01-15", "endDate": "2023-01-31"}, "amountPaid": "$80.00"}, {"employeeId": "2", "payPeriod": {"startDate": "2023-01-15", "endDate": "2023-01-31"}, "amountPaid": "$90.00"}]}}
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(json.loads(response.content), content)
@@ -140,7 +142,8 @@ class EmployeeReportSignalsTests(TestCase):
         user = User.objects.get(username='test_user')
         report = Report.objects.create(employer=user, number=1)
         job_group = JobGroup.objects.get(employer=user, title='A')
-        employee = Employee.objects.create(employer=user, number=17, job_group=job_group)
+        employee = Employee.objects.create(
+            employer=user, number=17, job_group=job_group)
 
         record = TimekeepingRecord.objects.create(
             employer=user,
@@ -152,11 +155,11 @@ class EmployeeReportSignalsTests(TestCase):
 
         record.save()
 
-        start_date, end_date = user.pay_periods.all()[0].start_date, user.pay_periods.all()[0].end_date
+        start_date, end_date = user.pay_periods.all(
+        )[0].start_date, user.pay_periods.all()[0].end_date
 
         test_start_date = datetime.date(2021, 5, 15)
         test_end_date = datetime.date(2021, 5, 31)
 
         self.assertEqual(start_date, test_start_date)
         self.assertEqual(end_date, test_end_date)
-
