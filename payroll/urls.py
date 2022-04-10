@@ -9,5 +9,5 @@ urlpatterns = [
     path('upload/', views.UploadFile.as_view()),
     path('retrieve/', views.EmployeeReportList.as_view(), name='retrieve'),
     path('register/', views.RegisterUser.as_view()),
-    path('api-token-auth/', obtain_auth_token, name="login")
+    path('login/', obtain_auth_token, name="login")
 ]
