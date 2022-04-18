@@ -2,8 +2,8 @@
 This project is an API inspired by the requirements of the Payroll code challenge written by Wave Financial for their Full-Stack Engineer applicants. See [Wave Software Development Challenge](https://github.com/wvchallenges/se-challenge-payroll) for more details. 
 
 # Features
-This API has three endpoints:
-- One endpoint to **register** an account
+This API has four endpoints:
+- One endpoint to **register** an account and another to **login**
 - Another endpoint to **upload** a csv file containing timekeeping data for employees
 - A final endpoint to **retrieve** a report containing payroll information based on a bi-monthly pay cycle
 
@@ -39,7 +39,9 @@ python manage.py createsuperuser
 
 # Routes
 ## Register
-The endpoing to register an account can be accessed via a POST request to the '/register' url.
+The endpoint to register an account can be accessed via a POST request to the '/register' url.
+## Login
+The endpoint to sign in can be accessed via a POST request to the '/login' url.
 ## Upload 
 The endpoint to upload a file can be accessed via a POST request to the '/upload' url.
 ## Retrieve
